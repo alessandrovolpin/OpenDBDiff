@@ -133,7 +133,7 @@ namespace OpenDBDiff.SqlServer.Schema.Model
                     sqlmergue += "N'" + item + "'";
                 else
                     if (valueType == IS_DATE)
-                    sqlmergue += "'" + DateTime.Parse(item, CultureInfo.InvariantCulture).ToString("yyyyMMdd HH:mm:ss.fff") + "'";
+                    sqlmergue += "'" + DateTime.Parse(item, CultureInfo.InvariantCulture).ToString("yyyyMMddTHH:mm:ss.fff") + "'";
                 else
                         if (valueType == IS_UNIQUE)
                     sqlmergue += "'{" + item + "}'";
