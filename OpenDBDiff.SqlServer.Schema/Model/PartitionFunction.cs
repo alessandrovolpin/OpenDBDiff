@@ -94,7 +94,21 @@ namespace OpenDBDiff.SqlServer.Schema.Model
                 Values.ForEach(item => { sqlvalues += "N'" + item + "',"; });
             else
                 if (valueType == IS_DATE)
-                Values.ForEach(item => { sqlvalues += "'" + DateTime.Parse(item).ToString("yyyyMMdd HH:mm:ss.fff") + "',"; });
+                {
+                    Values.ForEach(item =>
+                    {
+                        if (DateTime.TryParse(item, CultureInfo.InvariantCulture, DateTimeStyles.None, out var dt))
+                        {
+                            // Se il parse ha successo, formatta come vuoi
+                            sqlvalues += "'" + dt.ToString("yyyyMMdd HH:mm:ss.fff") + "',";
+                        }
+                        else
+                        {
+                            // Se fallisce, gestisci come stringa
+                            sqlvalues += "N'" + item + "',";
+                        }
+                    });
+                }
             else
                     if (valueType == IS_UNIQUE)
                 Values.ForEach(item => { sqlvalues += "'{" + item + "}',"; });
@@ -133,7 +147,16 @@ namespace OpenDBDiff.SqlServer.Schema.Model
                     sqlmergue += "N'" + item + "'";
                 else
                     if (valueType == IS_DATE)
-                    sqlmergue += "'" + DateTime.Parse(item).ToString("yyyyMMdd HH:mm:ss.fff") + "'";
+                    {
+                        if (DateTime.TryParse(item, CultureInfo.InvariantCulture, DateTimeStyles.None, out var dt))
+                        {
+                            sqlmergue += "'" + dt.ToString("yyyyMMdd HH:mm:ss.fff") + "'";
+                        }
+                        else
+                        {
+                            sqlmergue += "N'" + item + "'";
+                        }
+                    }
                 else
                         if (valueType == IS_UNIQUE)
                     sqlmergue += "'{" + item + "}'";
@@ -152,7 +175,20 @@ namespace OpenDBDiff.SqlServer.Schema.Model
                     sqsplit += "N'" + item + "'";
                 else
                     if (valueType == IS_DATE)
-                    sqsplit += "'" + DateTime.Parse(item).ToString("yyyyMMdd HH:mm:ss.fff") + "'";
+                    {
+                        // Tenta il parse con cultura invariata
+                        if (DateTime.TryParse(item, CultureInfo.InvariantCulture, DateTimeStyles.None, out var dt))
+                        {
+                            // Se riesce, formatta come preferisci
+                            sqsplit += "'" + dt.ToString("yyyyMMddTHH:mm:ss.fff") + "'";
+                        }
+                        else
+                        {
+                            // Se non riesce, lo trattiamo come stringa "nuda" (o "N'" + item + "'")
+                            // per evitare errori
+                            sqsplit += "N'" + item + "'";
+                        }
+                    }
                 else
                         if (valueType == IS_UNIQUE)
                     sqsplit += "'{" + item + "}'";
