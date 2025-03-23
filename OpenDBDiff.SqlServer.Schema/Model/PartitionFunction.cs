@@ -94,7 +94,7 @@ namespace OpenDBDiff.SqlServer.Schema.Model
                 Values.ForEach(item => { sqlvalues += "N'" + item + "',"; });
             else
                 if (valueType == IS_DATE)
-                Values.ForEach(item => { sqlvalues += "'" + DateTime.Parse(item, CultureInfo.InvariantCulture).ToString("yyyyMMdd HH:mm:ss.fff") + "',"; });
+                Values.ForEach(item => { sqlvalues += "'" + DateTime.Parse(item, CultureInfo.InvariantCulture).ToString("yyyyMMddTHH:mm:ss.fff") + "',"; });
             else
                     if (valueType == IS_UNIQUE)
                 Values.ForEach(item => { sqlvalues += "'{" + item + "}',"; });
@@ -152,7 +152,7 @@ namespace OpenDBDiff.SqlServer.Schema.Model
                     sqsplit += "N'" + item + "'";
                 else
                     if (valueType == IS_DATE)
-                    sqsplit += "'" + DateTime.Parse(item, CultureInfo.InvariantCulture).ToString("yyyyMMdd HH:mm:ss.fff") + "'";
+                    sqsplit += "'" + DateTime.Parse(item, CultureInfo.InvariantCulture).ToString("yyyyMMddTHH:mm:ss.fff") + "'";
                 else
                         if (valueType == IS_UNIQUE)
                     sqsplit += "'{" + item + "}'";
